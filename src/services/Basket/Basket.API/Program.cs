@@ -1,15 +1,25 @@
-var builder = WebApplication.CreateBuilder(args);
+using Basket.API.Infrastructure.Repositories;
+using Basket.API.Model;
 
-// Add services to the container.
+using StackExchange.Redis;
+
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+builder.Services.AddSingleton(sp =>
+{
+    string connectionString = builder.Configuration["ConnectionString"] ?? string.Empty;
 
-// Configure the HTTP request pipeline.
+    return ConnectionMultiplexer.Connect(connectionString);
+});
+
+builder.Services.AddTransient<IBasketRepository, RedisBasketRepository>();
+
+WebApplication app = builder.Build();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
