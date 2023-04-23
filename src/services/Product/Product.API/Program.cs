@@ -1,15 +1,30 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.EntityFrameworkCore;
 
-// Add services to the container.
+using Product.API.Extensions;
+using Product.API.Infrastructure;
+
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<ProductContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration["ConnectionString"]);
+});
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.MigrateDbContext<ProductContext>((context, services) =>
+{
+    IWebHostEnvironment env = services.GetRequiredService<IWebHostEnvironment>();
+    ILogger<ProductContextSeed> logger = services.GetRequiredService<ILogger<ProductContextSeed>>();
+
+    new ProductContextSeed()
+        .SeedAsync(context, env, logger)
+        .Wait();
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
