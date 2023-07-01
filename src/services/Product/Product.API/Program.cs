@@ -2,9 +2,11 @@ using Microsoft.EntityFrameworkCore;
 
 using Product.API.Extensions;
 using Product.API.Infrastructure;
+using Product.API.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddGrpc();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -36,5 +38,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGrpcService<ProductService>();
 
 app.Run();
