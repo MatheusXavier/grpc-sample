@@ -24,7 +24,7 @@ public class RedisBasketRepository : IBasketRepository
             return null;
         }
 
-        return JsonSerializer.Deserialize<CustomerBasket>(data, new JsonSerializerOptions
+        return JsonSerializer.Deserialize<CustomerBasket>(data!, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         });
@@ -40,10 +40,5 @@ public class RedisBasketRepository : IBasketRepository
         }
 
         return await GetBasketAsync(basket.BuyerId);
-    }
-
-    public async Task<bool> DeleteBasketAsync(Guid customerId)
-    {
-        return await _database.KeyDeleteAsync(customerId.ToString());
     }
 }

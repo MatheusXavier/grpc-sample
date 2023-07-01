@@ -2,13 +2,29 @@
 
 public class BasketItem
 {
-    public Guid Id { get; set; }
+    public int Id { get; }
 
-    public int ProductId { get; set; }
+    public string Name { get; }
 
-    public string ProductName { get; set; }
+    public string Description { get; }
 
-    public decimal UnitPrice { get; set; }
+    public double Price { get; }
 
-    public int Quantity { get; set; }
+    public int Quantity { get; private set; }
+
+    public BasketItem(int id, string name, string description, double price, int quantity)
+    {
+        Id = id;
+        Name = name;
+        Description = description;
+        Price = price;
+        Quantity = quantity;
+    }
+
+    public void IncreaseQuantity(int quantity)
+    {
+        Quantity += quantity;
+    }
+
+    public double Total => Price * Quantity;
 }

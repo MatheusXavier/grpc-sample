@@ -1,18 +1,8 @@
 ﻿namespace Basket.API.Model;
 
-public class CustomerBasket
+public record CustomerBasket(
+    Guid BuyerId,
+    List<BasketItem> Items)
 {
-    public Guid BuyerId { get; set; }
-
-    public List<BasketItem> Items { get; set; } = new List<BasketItem>();
-
-    public CustomerBasket(Guid customerId)
-    {
-        BuyerId = customerId;
-    }
-
-    public CustomerBasket()
-    {
-
-    }
+    public double Total => Items.Sum(p => p.Total);
 }
