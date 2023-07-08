@@ -12,6 +12,6 @@ It is necessary to start both services when running the project, for this you mu
 
 ![Configure Startup Projects](./docs/images/ConfigureStartupProjects.png)
 
-2. Set the `Action` of the two projects to `Start`
+2. Select the `Multiple startup projects` and set the `Action` of the two projects to `Start`
 
 ![Action Start Projects](./docs/images/ActionStartProjects.jpg)
